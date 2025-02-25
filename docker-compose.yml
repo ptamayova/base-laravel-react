@@ -1,0 +1,50 @@
+services:
+    app:
+        build:
+            context: .
+            target: local
+        # uncomment the following line if you want to run this in a production environment
+        # restart: always
+        ports:
+            - "80:80" # HTTP
+            - "443:443" # HTTPS
+            - "443:443/udp" # HTTP/3
+        volumes:
+            - ./:/app
+            - caddy_data:/data
+            - caddy_config:/config
+        # comment the following line in production, it allows to have nice human-readable logs in dev
+        tty: true
+        environment:
+            CADDY_GLOBAL_OPTIONS: debug
+        networks:
+            - laravel
+    composer:
+        image: composer:2
+        volumes:
+            - ./:/app
+        working_dir: /app
+        entrypoint: [ "composer" ]
+        networks:
+            - laravel
+    npm:
+        image: node:20-alpine
+        volumes:
+            - ./:/app
+        working_dir: /app
+        entrypoint: [ "npm" ]
+        networks:
+            - laravel
+    npx:
+        image: node:20-alpine
+        volumes:
+            - ./:/app
+        working_dir: /app
+        entrypoint: [ "npx" ]
+        networks:
+            - laravel
+networks:
+    laravel:
+volumes:
+    caddy_data:
+    caddy_config:
