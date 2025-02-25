@@ -33,7 +33,7 @@ jobs:
         run: vendor/bin/pint
 
       - name: Run Larastan
-        run: vendor/bin/phpstan analyse --memory-limit=1G --level=7 app/
+        run: vendor/bin/phpstan analyse --memory-limit=1G
 
       - name: Run Rector
         run: vendor/bin/rector process --ansi
