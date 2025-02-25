@@ -32,14 +32,20 @@ jobs:
       - name: Run Pint
         run: vendor/bin/pint
 
+      - name: Run Larastan
+        run: vendor/bin/phpstan analyse --memory-limit=1G --level=7 app/
+
+      - name: Run Rector
+        run: vendor/bin/rector process --ansi
+
       - name: Format Frontend
         run: npm run format
 
       - name: Lint Frontend
         run: npm run lint
 
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Refactors and fixes code with Pint, Larastan, Rector, Prettier and ESLint
+          commit_options: '--no-verify'
